@@ -1,0 +1,43 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id                Int                @id @default(autoincrement())
+  email             String             @unique
+  events            Event[]
+  connectedAccounts ConnectedAccount[]
+  createdAt         DateTime           @default(now())
+}
+
+model ConnectedAccount {
+  id           Int       @id @default(autoincrement())
+  provider     String // "google" | "outlook" | "apple"
+  accessToken  String
+  refreshToken String?
+  expiresAt    DateTime?
+  userId       Int
+
+  user User @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@unique([provider, userId], name: "provider_userId")
+}
+
+model Event {
+  id              Int      @id @default(autoincrement())
+  provider        String
+  externalEventId String
+  title           String
+  startTime       DateTime
+  endTime         DateTime
+  inviteStatus    String?
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+}
