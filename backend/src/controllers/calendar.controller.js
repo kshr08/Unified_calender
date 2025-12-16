@@ -29,12 +29,14 @@ export const syncCalendars = async (req, res) => {
       if (acc.provider === "google") {
         const token = await getValidGoogleAccessToken(acc);
         const events = await fetchGoogleEvents(token);
+        console.log("Google events fetched:", events.length);
         allEvents.push(...events);
       }
 
       if (acc.provider === "outlook") {
         const token = await getValidOutlookAccessToken(acc);
         const events = await fetchOutlookEvents(token);
+        console.log("Outlook events fetched:", events.length);
         allEvents.push(...events);
       }
     }

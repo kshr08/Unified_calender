@@ -8,8 +8,8 @@ export const fetchOutlookEvents = async (accessToken) => {
         Authorization: `Bearer ${accessToken}`,
       },
       params: {
-        $orderby: "start/dateTime",
         $top: 50,
+        $orderby: "start/dateTime",
       },
     }
   );
